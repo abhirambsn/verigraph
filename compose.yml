@@ -1,0 +1,70 @@
+services:
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v3.18.0
+    container_name: verigraph_mlflow
+    ports:
+      - "3333:5000"
+    volumes:
+      - mlflow_data:/mlflow
+    command: >
+      mlflow server
+      --host 0.0.0.0
+      --port 5000
+      --backend-store-uri sqlite:////mlflow/mlflow.db
+      --default-artifact-root mlflow-artifacts:/
+      --serve-artifacts
+      --artifacts-destination /mlflow/artifacts
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - verigraph-net
+  
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.verigraph
+  #   container_name: verigraph_backend
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     - OLLAMA_BASE_URL=http://host.docker.internal:11434/v1
+  #     - OLLAMA_API_KEY=ollama
+  #     - AGENT_MODEL_NAME=${AGENT_MODEL_NAME:-qwen2.5:7b}
+  #     - JUDGE_MODEL_NAME=${JUDGE_MODEL_NAME:-llama3.1:8b}
+  #     - MLFLOW_TRACKING_URI=http://mlflow:5000
+  #     - MLFLOW_EXPERIMENT_NAME=VeriGraph-FullStack
+  #   extra_hosts:
+  #     - "host.docker.internal:host-gateway"
+  #   depends_on:
+  #     mlflow:
+  #       condition: service_healthy
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+  #     interval: 15s
+  #     timeout: 5s
+  #     retries: 3
+  #   networks:
+  #     - verigraph-net
+  
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: verigraph-frontend
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     - backend
+  #   networks:
+  #     - verigraph-net
+
+volumes:
+  mlflow_data:
+
+networks:
+  verigraph-net:
+    driver: bridge

@@ -1,0 +1,31 @@
+[project]
+name = "verigraph"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Bhallamudi Sai Narasimha Abhiram", email = "68442741+abhirambsn@users.noreply.github.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "ddgs>=9.16.1",
+    "duckduckgo-search>=8.1.1",
+    "fastapi>=0.162.2",
+    "langchain>=1.4.9",
+    "langchain-community>=0.4.2",
+    "langchain-core>=1.7.6",
+    "langchain-openai>=1.7.4",
+    "mlflow>=3.18.0",
+    "openai>=3.46.0",
+    "pandas>=3.1.1",
+    "pydantic>=2.14.3",
+    "python-dotenv>=1.2.4",
+    "sse-starlette>=3.7.0",
+]
+
+[project.scripts]
+verigraph = "verigraph:main"
+
+[build-system]
+requires = ["uv_build>=0.13.7,<0.14.0"]
+build-backend = "uv_build"
