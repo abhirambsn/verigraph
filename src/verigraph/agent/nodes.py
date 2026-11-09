@@ -16,8 +16,8 @@ def planner_node(state: AgentState) -> dict:
   revisions = state.get("revision_count", 0)
 
   sys_msg = (
-    "You are a Search Planner. Output ONLY a concise, raw web search query string "
-    "(no quotes or conversational filler) to gather facts for the user's request."
+    "You are a Search Planner. Output ONLY a concise, 3 to 6 word search query string "
+    "(keywords only, no quotes, no conversational filler) to gather facts for the user's request."
   )
   user_msg = f"Task: {task}\n"
   if feedback:

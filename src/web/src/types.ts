@@ -12,4 +12,14 @@ export interface NodeTraceLog {
   timestamp: string;
   detail: string;
   status?: "ok" | "loop";
+  rawQuery?: string;
+  evidenceCount?: number;
+  revisionCount?: number;
 }
+
+export interface CritiqueRound {
+  round: number;
+  feedback: string;
+  isSufficient: boolean;
+}
+
